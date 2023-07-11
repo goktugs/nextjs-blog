@@ -13,3 +13,29 @@ export interface IResponse {
   skip: number;
   limit: number;
 }
+
+export interface IUser {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  username: string;
+  image: string;
+}
+
+export interface ICommentResponse {
+  comments: IComment[];
+  total: number;
+  skip: number;
+  limit: number;
+}
+
+export interface IComment {
+  id: number;
+  body: string;
+  postId: number;
+  user: {
+    id: number;
+    username: string;
+  };
+}
