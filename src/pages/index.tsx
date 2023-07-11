@@ -4,6 +4,7 @@ import Head from "next/head";
 import React, { useEffect, useState } from "react";
 import { faker } from "@faker-js/faker";
 import Image from "next/image";
+import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -63,7 +64,7 @@ export default function Home() {
       </Head>
       <body>
         <div className="container mx-auto">
-          <div className="my-4 px-8 ">
+          <div className="py-4 px-8 ">
             <div className="relative">
               <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                 <svg
@@ -119,12 +120,15 @@ export default function Home() {
                   <h3 className="text-lg font-bold">{item.title}</h3>
                   <p className="text-gray-500">{item.body}</p>
                   <div className="w-full flex justify-between mt-4 md:mt-2">
-                    <span className="text-sm text-slate-300 ">
-                      Published 2 days ago * 5 min read * 8 comments
+                    <span className="text-sm text-[#135466] pt-2">
+                      Published 2 days ago - 5 min read - 8 comments
                     </span>
-                    <button className="text-sm text-green-300">
-                      Read More →
-                    </button>
+                    <Link
+                      href={`/detail/${item.id}`}
+                      className="text-sm text-[#087d96] hover:text-red-900 bg-[#a1faff] px-4 py-2 whitespace-pre rounded-md hover:bg-[#019db9]"
+                    >
+                      Read More <span className="hidden md:inline">&rarr;</span>
+                    </Link>
                   </div>
                 </div>
               </div>
