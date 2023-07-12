@@ -25,7 +25,7 @@ export default function Page({
   commData: IComment[];
 }) {
   return (
-    <div className="container mx-auto px-12">
+    <div className="container mx-auto px-12 pb-32">
       <h1 className="mb-8 text-4xl text-center font-bold py-12 ">
         {postData.title}
       </h1>

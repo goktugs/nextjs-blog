@@ -1,10 +1,11 @@
 import { IPosts, IResponse } from "@/types/types";
 import { Inter } from "next/font/google";
 import Head from "next/head";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { faker } from "@faker-js/faker";
 import Image from "next/image";
 import Link from "next/link";
+import BlogContext from "../context/BlogContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -14,9 +15,15 @@ export default function Home() {
   const [searchInput, setSearchInput] = useState<string>("");
   const [images, setImages] = useState<{ image: string }[]>();
 
+  const { markPostAsRead, readPosts } = useContext(BlogContext);
+
+  const handleRead = (id: string) => {
+    markPostAsRead(id);
+  };
+
   useEffect(() => {
     setLoading(true);
-    fetch("https://dummyjson.com/posts?limit=10")
+    fetch("https://dummyjson.com/posts?limit=15")
       .then((res) => res.json() as Promise<IResponse>)
       .then((data) => {
         setData(data.posts);
@@ -33,14 +40,14 @@ export default function Home() {
       return images;
     };
 
-    const allImages = images(10);
+    const allImages = images(15);
 
     setImages(allImages);
   }, []);
 
   function getFakeImage() {
     return {
-      image: faker.image.urlLoremFlickr(),
+      image: faker.image.url(),
     };
   }
 
@@ -120,14 +127,21 @@ export default function Home() {
                   <h3 className="text-lg font-bold">{item.title}</h3>
                   <p className="text-gray-500">{item.body}</p>
                   <div className="w-full flex justify-between mt-4 md:mt-2">
-                    <span className="text-sm text-[#135466] pt-2">
-                      Published 2 days ago - 5 min read - 8 comments
-                    </span>
-                    <Link
-                      href={`/detail/${item.id}`}
-                      className="text-sm text-[#087d96] hover:text-red-900 bg-[#a1faff] px-4 py-2 whitespace-pre rounded-md hover:bg-[#019db9]"
-                    >
-                      Read More <span className="hidden md:inline">&rarr;</span>
+                    {readPosts.includes(item.id.toString()) && (
+                      <span className="text-sm text-[#135466] pt-2">
+                        {" "}
+                        Already Read
+                      </span>
+                    )}
+
+                    <Link href={`/detail/${item.id}`}>
+                      <div
+                        onClick={() => handleRead(item.id.toString())}
+                        className="text-sm text-[#087d96] hover:text-red-900 bg-[#a1faff] px-4 py-2 whitespace-pre rounded-md hover:bg-[#019db9] cursor-pointer"
+                      >
+                        Read More{" "}
+                        <span className="hidden md:inline">&rarr;</span>
+                      </div>
                     </Link>
                   </div>
                 </div>
