@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { ReactNode, useState } from "react";
 import BlogContext from "./BlogContext";
 
-const BlogProvider = ({ children }) => {
+const BlogProvider = ({ children }: { children: ReactNode }) => {
   const [readPosts, setReadPosts] = useState<string[]>([]);
 
   const markPostAsRead = (id: string) => {
