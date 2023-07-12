@@ -59,9 +59,6 @@ export default function Home() {
     ? data?.filter((item) => item.body.includes(searchInput))
     : data;
 
-  if (isLoading) return <p>Loading...</p>;
-  if (!data) return <p>No profile data</p>;
-
   return (
     <>
       <Head>
@@ -70,85 +67,107 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <body>
-        <div className="container mx-auto">
-          <div className="py-4 px-8 ">
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                <svg
-                  className="w-4 h-4 text-gray-500 dark:text-gray-400"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                  />
-                </svg>
-              </div>
-              <input
-                type="search"
-                id="search"
-                className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 "
-                placeholder="Search"
-                onChange={handleSearch}
-                value={searchInput}
-              />
-              <button
-                type="submit"
-                className="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        {isLoading ? (
+          <div className="flex items-center justify-center w-full h-full">
+            <div className="flex justify-center items-center space-x-1 text-sm text-gray-700">
+              <svg
+                fill="none"
+                className="w-6 h-6 animate-spin"
+                viewBox="0 0 32 32"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                Search
-              </button>
+                <path
+                  clip-rule="evenodd"
+                  d="M15.165 8.53a.5.5 0 01-.404.58A7 7 0 1023 16a.5.5 0 011 0 8 8 0 11-9.416-7.874.5.5 0 01.58.404z"
+                  fill="currentColor"
+                  fill-rule="evenodd"
+                />
+              </svg>
+
+              <div>Loading ...</div>
             </div>
           </div>
-
-          <div className="flex flex-col gap-8">
-            {filteredData?.map((item: IPosts, index) => (
-              <div
-                key={item.id}
-                className="border p-4 rounded-md md:flex md:gap-8"
-              >
-                <div className=" relative w-full h-72 md:h-36 md:w-36 ">
-                  {images && (
-                    <Image
-                      alt={index.toString()}
-                      src={images[index].image}
-                      fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        ) : (
+          <div className="container mx-auto">
+            <div className="py-4 px-8 ">
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                  <svg
+                    className="w-4 h-4 text-gray-500 dark:text-gray-400"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
                     />
-                  )}
+                  </svg>
                 </div>
-                <div className="mt-2 md:mt-0">
-                  <h3 className="text-lg font-bold">{item.title}</h3>
-                  <p className="text-gray-500">{item.body}</p>
-                  <div className="w-full flex justify-between mt-4 md:mt-2">
-                    {readPosts.includes(item.id.toString()) && (
-                      <span className="text-sm text-[#135466] pt-2">
-                        {" "}
-                        Already Read
-                      </span>
-                    )}
+                <input
+                  type="search"
+                  id="search"
+                  className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 "
+                  placeholder="Search"
+                  onChange={handleSearch}
+                  value={searchInput}
+                />
+                <button
+                  type="submit"
+                  className="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                >
+                  Search
+                </button>
+              </div>
+            </div>
 
-                    <Link href={`/detail/${item.id}`}>
-                      <div
-                        onClick={() => handleRead(item.id.toString())}
-                        className="text-sm text-[#087d96] hover:text-red-900 bg-[#a1faff] px-4 py-2 whitespace-pre rounded-md hover:bg-[#019db9] cursor-pointer"
-                      >
-                        Read More{" "}
-                        <span className="hidden md:inline">&rarr;</span>
-                      </div>
-                    </Link>
+            <div className="flex flex-col gap-8">
+              {filteredData?.map((item: IPosts, index) => (
+                <div
+                  key={item.id}
+                  className="border p-4 rounded-md md:flex md:gap-8"
+                >
+                  <div className=" relative w-full h-72 md:h-36 md:w-36 ">
+                    {images && (
+                      <Image
+                        alt={index.toString()}
+                        src={images[index].image}
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      />
+                    )}
+                  </div>
+                  <div className="mt-2 md:mt-0">
+                    <h3 className="text-lg font-bold">{item.title}</h3>
+                    <p className="text-gray-500">{item.body}</p>
+                    <div className="w-full flex justify-between mt-4 md:mt-2">
+                      {readPosts.includes(item.id.toString()) && (
+                        <span className="text-sm text-[#135466] pt-2">
+                          {" "}
+                          Already Read
+                        </span>
+                      )}
+
+                      <Link href={`/detail/${item.id}`}>
+                        <div
+                          onClick={() => handleRead(item.id.toString())}
+                          className="text-sm text-[#087d96] hover:text-red-900 bg-[#a1faff] px-4 py-2 whitespace-pre rounded-md hover:bg-[#019db9] cursor-pointer"
+                        >
+                          Read More{" "}
+                          <span className="hidden md:inline">&rarr;</span>
+                        </div>
+                      </Link>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </body>
     </>
   );
